@@ -35,7 +35,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Home</a></li>
-                <li><a href="http://www.github.com">GitHub Repo</a></li>
+                <li><a href="https://github.com/pshafer/ebooks-search">GitHub Repo</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
