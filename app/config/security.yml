@@ -1,11 +1,19 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
+    role_hierarchy:
+        ROLE_EBOOK_ADMIN:   ROLE_USER
+        ROLE_ADMIN:         ROLE_EBOOK_ADMIN
 
+    encoders:
+      AppSecurityBundle\Entity\User:
+        algorithm: bcrypt
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        my_db_provider:
+          entity:
+            class: AppSecurityBundle:User
+
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,7 +23,17 @@ security:
 
         main:
             anonymous: ~
+            provider: my_db_provider
             # activate different ways to authenticate
+            guard:
+              authenticators:
+                - app.form_login_authenticator
+                - app_security.cas_authenticator
+              entry_point: app.form_login_authenticator
+
+            logout:
+              path: /logout
+              target: /
 
             # http_basic: ~
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate

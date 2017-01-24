@@ -1,0 +1,19 @@
+
+#author-fields-list{
+  padding: 0px;
+  list-style-type: none;
+
+  li {
+    list-style-type: none;
+
+    padding: 0.5rem 0rem;
+    border-bottom: solid 1px grey;
+
+    input{
+      &.author-field{
+        display: inline-block;
+        width: 75%;
+      }
+    }
+  }
+}

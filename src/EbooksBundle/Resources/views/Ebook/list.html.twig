@@ -1,0 +1,30 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}E-Book List{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Ebooks</h1>
+    <div class="section-tabs">
+        {{ include('EbooksBundle:Ebook:ebook-tabs.html.twig') }}
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>ISBN</th>
+            <th>ISBN13</th>
+            <th>Actions</th>
+        </tr>
+        {% for ebook in ebooks %}
+            <tr>
+                <td>{{ ebook.title }}</td>
+                <td>{{ ebook.isbn10 }}</td>
+                <td>{{ ebook.isbn13 }}</td>
+                <td><a href="{{ path('admin_ebook_edit', {'id': ebook.id }) }}" class="btn btn-xs btn-primary"><i class="fa fa-fw fa-edit"></i> Edit</a> <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-fw fa-trash"></i> Delete</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4"> No Subjects Found! </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% set route = app.request.attributes.get('_route') %}
+
+{% set add_update_title = 'Add E-Book' %}
+{% set add_update_path = path('admin_ebook_new', app.request.attributes.get('_route_params')) %}
+{% if route == 'admin_ebook_edit' %}
+    {% set add_update_title = 'Update E-Book' %}
+    {% set add_update_path = path('admin_ebook_edit', app.request.attributes.get('_route_params')) %}
+{% endif %}
+
+<ul class="nav nav-tabs">
+    <li role="presentation" {% if route == 'admin_ebook_list' %}class="active" {% endif %}><a href="{{ path('admin_ebook_list') }}"><i class="fa fa-fw fa-plus"></i>List E-Books</a></a></li>
+    <li role="presentation" {% if route == 'admin_ebook_new' or route == 'admin_ebook_edit' %}class="active"{% endif %}><a href="{{ add_update_path }}"><i class="fa fa-fw fa-pencil-square"></i>{{ add_update_title }}</a></a></li>
+    <li role="presentation" ><a href="{{ path('admin_ebook_list') }}"><i class="fa fa-fw fa-upload"></i>Import E-Books</a></a></li>
+</ul>

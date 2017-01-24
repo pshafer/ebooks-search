@@ -2,6 +2,8 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@EbooksBundle/Resources/config/services.yml" }
+    - { resource: "@AppSecurityBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -19,6 +21,8 @@ framework:
     csrf_protection: ~
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
+    serializer:
+      enabled: true
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -36,10 +40,16 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - bootstrap_3_layout.html.twig
 
 # Doctrine Configuration
 doctrine:
     dbal:
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
         driver:   pdo_mysql
         host:     "%database_host%"
         port:     "%database_port%"
@@ -66,3 +76,24 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+nelmio_solarium:
+    endpoints:
+        default:
+            scheme: %solr_scheme%
+            host: %solr_host%
+            port: %solr_port%
+            path: %solr_path%
+            core: %solr_core%
+            timeout: %solr_timeout%
+    clients:
+        default:
+            endpoints: [default]
+app_security:
+  cas_auth:
+    cas_debug: %cas_debug%
+    cas_debug_file: %cas_debug_file%
+    cas_server_host: %cas_server_host%
+    cas_server_uri: %cas_server_uri%
+    cas_server_port: %cas_server_port%
+    cas_server_version: %cas_server_version%

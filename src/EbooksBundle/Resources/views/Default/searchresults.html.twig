@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <aside id="filters" class="col-md-3">
+            {% if search_params.filter is defined and search_params.filter|length > 0 %}
+            <div id="applied-filters">
+                <h4>Applied Filters</h4>
+                    {% for title,filters in search_params.current_filters %}
+                        <div class="filter-set">
+                        <h5 class="filter-set-title">{{ title }}</h5>
+                        <ul class="filter-set-list">
+                        {% for filter in filters %}
+                            {% set filter_name = filter.label|replace({'"':''}) %}
+                            <li>{{ filter_name }} <a href="{{ path('search_results', filter.query_string) }}" class="remove-filter" title="Remove filter {{ filter_name }}"><i class="fa fa-fw fa-minus-circle"></i></a></li>
+                        {% endfor %}
+                        </ul>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <h4>Filters</h4>
+            <div id="subject-filters" class="filter-set">
+                <h5 class="filter-set-title">Subjects</h5>
+                <ul class="filter-set-list facet-list">
+                    {% for name,count in search_results.facets.subject %}
+                        {% set filter_value = "subject:\"#{name}\"" %}
+                        {% set temp_qs = search_params.query_string %}
+
+                        {% set show_filter = true %}
+                        {% if temp_qs.filter is defined %}
+                            {% if filter_value not in temp_qs.filter %}
+                                {% set filter = temp_qs.filter %}
+                                {% set filter = filter|merge([filter_value]) %}
+                                {% set temp_qs = temp_qs|merge({"filter": filter}) %}
+                            {% else %}
+                                {% set show_filter = false %}
+                            {% endif %}
+                        {% else %}
+                            {% set temp_qs = temp_qs|merge({'filter': [filter_value]}) %}
+                        {% endif %}
+
+                        {% if show_filter %}
+                        <li><a href="{{ path('search_results', temp_qs) }}" class="subject-facet add-filter" data-value="{{ name }}" title="Add Filter">{{ name }} ({{ count }})</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="filter-set">
+                <h5 class="filter-set-title">Vendors/Packages</h5>
+                <ul class="filter-set-list facet-list">
+                    {%  for name,count in search_results.facets.vendor %}
+                        {% set filter_value = "vendor:\"#{name}\"" %}
+                        {% set temp_qs = search_params.query_string %}
+
+                        {% set show_filter = true %}
+                        {% if temp_qs.filter is defined %}
+                            {% if filter_value not in temp_qs.filter %}
+                                {% set filter = temp_qs.filter %}
+                                {% set filter = filter|merge([filter_value]) %}
+                                {% set temp_qs = temp_qs|merge({"filter": filter}) %}
+                            {% else %}
+                                {% set show_filter = false %}
+                            {% endif %}
+                        {% else %}
+                            {% set temp_qs = temp_qs|merge({'filter': [filter_value]}) %}
+                        {% endif %}
+
+                        {% if show_filter %}
+                        <li><a href="{{ path('search_results', temp_qs) }}" class="vendor-facet add-filter" data-value="{{ name }}" title="Add Filter">{{ name }} ({{ count }})</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+        <div id="content" class="col-md-9">
+            <section id="search-controls" class="search-control">
+                <form action="{{ path('search_results') }}" method="get" class="">
+                    <div class="form-group">
+                        <div class="input-group input-group-lg">
+
+                            <input type="text" class="form-control input-lg" id="q" name="q" value="{{ search_params.query_display }}" placeholder="Enter Search Terms">
+                            <div class="input-group-btn bs-dropdown-to-select-group">
+                                <button type="button" class="btn btn-default dropdown-toggle as-is bs-dropdown-to-select" data-toggle="dropdown" tabindex="-1">
+                                    <span data-bind="bs-drp-sel-label" data-value="{{ search_params.type }}">{{ search_params.types[search_params.type] }}</span>
+                                    <input type="hidden" name="search_type" data-bind="bs-drp-sel-value" value="us">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" style=" max-height: 300px; overflow: scroll; overflow-y: scroll; overflow-x: hidden; ">
+                                    <!-- Loop -->
+                                    {% for key,value in search_params.types %}
+                                    <li><a href="#" data-value="{{ key }}" class="type-select {% if key == search_params.type %}selected{% endif %}">{{ value }}</a></li>
+                                    {% endfor %}
+                                    <!-- END Loop -->
+                                </ul>
+                            </div>
+                            <span class="input-group-btn">
+                                <button class="btn btn-lg">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="search-field">Search In</label>
+                            <select name="search-field" id="search-field" class="form-control">
+                                <option value="all">All Fields</option>
+                                <option value="title">Title</option>
+                                <option value="isbn">ISBN</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="use_existing" id="use-existing" value="1"> Use Existing Search
+                            </label>
+                        </div>
+                        <div id="result-controls" class="form-group">
+                            <label for="search-results">Results per page</label>
+                            <select name="results">
+                                {%  for step in range(search_params.result_display.min_value, search_params.result_display.max_value, search_params.result_display.step) %}
+                                    <option value="{{ step }}" {%if step == search_params.display %}selected{% endif %}>{{ step }}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label for="search-results">Sort by</label>
+                            <select name="sort">
+                                <option value="score">Relevance</option>
+                                <option value="title_sort">Title</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </section>
+            <section id="search-result-pane">
+                <div id="results-summary">
+                    <p>Showing results <em>{{ pager.start + 1 }}</em> through <em>{{ pager.start + pager.display }}</em> of <em>{{ search_results.numFound }}</em> matching records</p>
+                </div>
+                <div id="results-list">
+                    {%  for document in search_results.documents %}
+                    <div class="result-doc">
+                        <h4 class="title"><a href="{{ document.url }}">{{ document.title }}</a></h4>
+                        <div class="document-data">
+                        {% if document.isbn is defined  %}
+                        <p><span class="field-label">ISBN:</span> {{ document.isbn }}</p>
+                        {% endif %}
+                        {% if document.isbn13 is defined  %}
+                        <p><span class="field-label">ISBN13:</span> {{ document.isbn13 }}</p>
+                        {% endif %}
+                        {% if document.vendor is defined  %}
+                        <p><span class="field-label">Available From: </span>{{ document.vendor }}</p>
+                        {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
