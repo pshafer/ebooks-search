@@ -6,7 +6,17 @@ framework:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
         strict_requirements: true
     profiler: { only_exceptions: false }
-
+doctrine:
+    dbal:
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+        driver:   pdo_mysql
+        host:     '%database_host%'
+        dbname:   '%database_name%'
+        user:     '%database_user%'
+        password: '%database_password%'
 web_profiler:
     toolbar: true
     intercept_redirects: false
@@ -32,3 +42,14 @@ monolog:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+ebooks:
+    search_types:
+        kw: Keyword
+        phrase: Phrase
+        bool: Boolean
+    result_display:
+        min_value: 10
+        max_value: 50
+        step: 10
+        default_value: 20

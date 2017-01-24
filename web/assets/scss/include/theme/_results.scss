@@ -1,0 +1,42 @@
+#search-result-pane{
+  #results-summary{
+    margin: 0rem;
+    margin-top: 1rem;
+    padding: 1rem 0rem;
+    font-weight: 600;
+    border-bottom: solid 1px lightgray;
+
+    em{
+      font-style: italic;
+    }
+  }
+
+  #results-list{
+    border-top: solid 1px lightgray;
+    border-bottom: solid 1px lightgray;
+    .result-doc{
+      padding: 1rem 0rem;
+      .title{
+        font-weight: 600;
+        font-size: 1.5rem;
+        line-hight: 1.7rem;
+        margin: 0;
+        padding: 0;
+      }
+
+      .document-data{
+        font-size: 1rem;
+        line-height: 1.2rem;
+        padding: 1rem 0rem 0rem 1rem;
+
+        p{
+          margin: 0;
+
+          .field-label{
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}

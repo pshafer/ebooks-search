@@ -1,0 +1,24 @@
+
+#subject-list{
+  .column-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    -ms-column-count: 4;
+    -o-column-count: 4;
+    column-count: 4;
+    -webkit-column-gap: 2em;
+    -moz-column-gap: 2em;
+    -ms-column-gap: 2em;
+    -o-column-gap: 2em;
+    column-gap: 2em;
+
+    li{
+      list-style: none;
+      padding: 0px;
+      line-height: 2rem;
+    }
+  }
+}

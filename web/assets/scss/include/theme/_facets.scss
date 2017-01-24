@@ -1,0 +1,30 @@
+.filter-set{
+  border: solid 1px lightblue;
+  margin: 0 0 1rem 0;
+  .filter-set-title{
+    background: lightblue;
+    margin: 0 0 0.5rem 0;
+    padding: 0.5rem;
+  }
+
+  .filter-set-list{
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px lightgray;
+    list-style: none;
+    li{
+      padding: 0rem 0.5rem;
+      list-style:none;
+      list-style-position: outside;
+    }
+  }
+}
+
+#applied-filters{
+  .filter-set{
+    margin-left: 1rem;
+  }
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: solid 1px lightgray;
+}

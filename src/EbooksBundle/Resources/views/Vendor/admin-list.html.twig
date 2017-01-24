@@ -1,0 +1,27 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}Manage Vendors{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Vendors/Packages</h1>
+
+    <div class="section-tabs">
+        {{ include('EbooksBundle:Vendor:vendor-tabs.html.twig') }}
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th><th>Actions</th>
+        </tr>
+        {% for vendor in vendors %}
+            <tr>
+                <td>{{ vendor.name }}</td>
+                <td><a href="{{ path('edit_vendor', {'id': vendor.id }) }}" class="btn btn-xs btn-primary"><i class="fa fa-fw fa-edit"></i> Edit</a> <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-fw fa-trash"></i> Delete</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2"> No Vendors Found! </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
