@@ -1,0 +1,61 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %} Add E-Book{% endblock %}
+
+{% block body %}
+    <h1>Add/Update E-Book</h1>
+    <div class="section-tabs">
+        {{ include('EbooksBundle:Ebook:ebook-tabs.html.twig') }}
+    </div>
+    {{ form_start(form) }}
+
+    {{ form_row(form.title) }}
+
+    {{ form_row(form.isbn10) }}
+
+    {{ form_row(form.isbn13) }}
+
+    {{ form_row(form.url) }}
+
+    {{ form_row(form.summary) }}
+
+    <div class="form-group">
+        {{ form_label(form.authors) }}
+        {% set prototype = form_widget(form.authors.vars.prototype) %}
+        <ul id="author-fields-list" data-prototype="{{ prototype|e }}">
+            {% for authorField in form.authors %}
+            <li>
+                {{ form_errors(authorField) }}
+                {{ form_widget(authorField) }}
+            </li>
+            {% endfor %}
+            <li>{{ prototype|replace({'__name__': form.authors|length })|raw }} </li>
+        </ul>
+    </div>
+    {% do form.authors.setRendered %}
+
+    {{ form_row(form.subjects) }}
+
+    {{ form_row(form.vendor) }}
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/chosen/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/ebook.authors.js') }}"></script>
+    <script>
+        $('#author-fields-list').multifieldList({
+            fieldNameTemplate: 'ebook[authors][__index__]',
+            fieldIDTemplate: 'ebook_authors___index__'}
+        );
+
+        $('.chzn-select').chosen();
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/js/chosen/chosen.css') }}" />
+{% endblock %}

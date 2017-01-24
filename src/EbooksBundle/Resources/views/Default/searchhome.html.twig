@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<main id="page-container">
+    <section id="search-bar" class="row">
+        <div class="col-md-12">
+            {{  form_start(searchForm) }}
+                <div class="form-group input-group">
+                    {{ form_widget(searchForm.q, {'attr': {'class': 'input-lg', 'placeholder': 'Search E-Books'} } ) }}
+                    <div class="input-group-btn bs-dropdown-to-select-group">
+                        <button type="button" class="btn btn-lg btn-default dropdown-toggle as-is bs-dropdown-to-select" data-toggle="dropdown" tabindex="-1">
+                            <span data-bind="bs-drp-sel-label" data-value="{{ search.type }}">{{ search.types[search.type] }}</span>
+                            <input type="hidden" name="search_type" data-bind="bs-drp-sel-value" value="{{ search.type }}">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" style=" max-height: 300px; overflow: scroll; overflow-y: scroll; overflow-x: hidden; ">
+                            <!-- Loop -->
+                            {% for key,value in search.types %}
+                                <li><a href="#" data-value="{{ key }}" class="type-select {% if key == search.type %}selected{% endif %}">{{ value }}</a></li>
+                            {% endfor %}
+                            <!-- END Loop -->
+                        </ul>
+                    </div>
+                    <span class="input-group-btn">{{ form_widget(searchForm.search, {'attr': {'class': 'btn-lg btn-search'}} ) }}</span>
+                </div>
+                {{ form_widget(searchForm) }}
+            {{ form_end(searchForm) }}
+            <h2>There are {{ numBooks }} Medical E-Books Available!</h2>
+        </div>
+    </section>
+    <section id="subject-list" class="row">
+        <div class="col-md-12">
+        <h2>Browse by Subject</h2>
+        <ul class="column-list">
+            {% for name,count in subjects %}
+                {% set query_string = {'filter':["subject:\"#{name}\""]} %}
+                <li><a href="{{ path('search_results', query_string) }}" class="subject-facet" data-value="{{ name }}">{{ name }} ({{ count }})</a></li>
+            {% endfor %}
+        </ul>
+    </section>
+</main>
+{% endblock %}
+

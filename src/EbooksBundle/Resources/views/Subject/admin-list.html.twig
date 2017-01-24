@@ -1,0 +1,27 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}Manage Subjects{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Subjects</h1>
+
+    <div class="section-tabs">
+        {{ include('EbooksBundle:Subject:subject-tabs.html.twig') }}
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th><th>Actions</th>
+        </tr>
+        {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>
+                <td><a href="{{ path('admin_subject_edit', {'id': subject.id }) }}" class="btn btn-xs btn-primary"><i class="fa fa-fw fa-edit"></i> Edit</a> <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-fw fa-trash"></i> Delete</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2"> No Subjects Found! </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
